@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import time
-import re
+import json
 import pandas as pd
 
 drug_name_list = []
@@ -10,10 +10,43 @@ ingredient_list = []
 labeler_list = []
 NDC_code_list = []
 
+
 BASE_URL = 'https://www.drugs.com/'
 COURSES_PATH = 'otc-a1.html'
+CACHE_FILE_NAME = 'cachedrug_Scrape.json'
+headers = {'User-Agent': 'UMSI 507 Course Project - Python Web Scraping','From': 'youremail@domain.com','Course-Info': 'https://www.si.umich.edu/programs/courses/507'}
 
-## Make the soup for the Courses page
+def load_cache():
+    try:
+        cache_file = open(CACHE_FILE_NAME, 'r')
+        cache_file_contents = cache_file.read()
+        cache = json.loads(cache_file_contents)
+        cache_file.close()
+    except:
+        cache = {}
+    return cache
+
+
+def save_cache(cache):
+    cache_file = open(CACHE_FILE_NAME, 'w')
+    contents_to_write = json.dumps(cache)
+    cache_file.write(contents_to_write)
+    cache_file.close()
+
+
+def make_url_request_using_cache(url, cache):
+    if (url in cache.keys()): # the url is our unique key
+        print("Using cache")
+        return cache[url]
+    else:
+        print("Fetching")
+        time.sleep(1)
+        response = requests.get(url, headers=headers)
+        cache[url] = response.text
+        save_cache(cache)
+        return cache[url]
+
+
 courses_page_url = BASE_URL + COURSES_PATH
 response = requests.get(courses_page_url)
 soup = BeautifulSoup(response.text, 'html.parser')
@@ -26,7 +59,6 @@ for drug_listing_lis in drugs_listing_lis:
     drug_details_path = drug_link_tag['href']
     drug_details_url = BASE_URL + drug_details_path 
 
-    ## Make the soup for course details
     response = requests.get(drug_details_url)
     soup = BeautifulSoup(response.text, 'html.parser')
 
