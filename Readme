@@ -1,0 +1,23 @@
+This project is for SI507 Final Project
+
+In final_project.ipynb, you can see how I import the data and construct them into my data structure.
+I am using two non-binary trees in my project.
+
+The operation of my project is simple, just run the project.py file in terminal and you will be greeted
+by a question that allow you to choose from four different features.
+     1. Determine whether a drug is otc or prescription.
+     2. Search for the otc medicine.
+     3. Search for information of medines with the same dosage form.
+     4. Search for the prescription medicine
+
+For 1, you can type in the drug you what to identify, here are some example you can try:
+After Bite the Itch Eraser, A and D, Docusate Sodium (Liquid)
+
+For 2, you can search for an otc medicine and we can get its information, for example:
+A 50% ISOPROPYL Rubbing Alcohol
+
+For 3, you can search for a specific dosage form and get the information of how many drugs are there in this form, for example:
+cream, liquid
+
+For 4, you can search for an prescription medicine and we can get its information, for example:
+Amlodipine
